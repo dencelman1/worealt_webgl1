@@ -1,1 +1,1 @@
-export * from "./ctx/i.js";
+export * from './figure/i.js';

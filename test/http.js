@@ -35,7 +35,9 @@ import {join} from "path";
                 u === "/js"
                 ? S.writeHead(200,jsh).end(readFileSync(jsp))
                 :
-                S.writeHead(200,jsh).end(readFileSync(join(cwd, "src"+u)))
+                u.startsWith("/test")
+                ? S.writeHead(200,jsh).end(readFileSync(join(cwd, "test/js"+u.substring(5))))
+                : S.writeHead(200,jsh).end(readFileSync(join(cwd, "src"+u)))
             )
         })
         .listen(port, () => console.log(port));

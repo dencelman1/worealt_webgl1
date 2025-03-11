@@ -1,9 +1,6 @@
 
 
-import render from '/test/render.js';
-
-
-(
+export default (
     (a) => {
         var
             b = (
@@ -38,11 +35,7 @@ import render from '/test/render.js';
 
             window.addEventListener("resize", resize),
 
-            window.dispatchEvent( new Event("resize") ),
-
-            render(a,b)
+            window.dispatchEvent( new Event("resize") )
         );
     }
-)(
-    document.querySelector("canvas")
 );
