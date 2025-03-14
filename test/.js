@@ -1,14 +1,14 @@
 
 
 import render from '/test/render.js';
+import * as c from "/i.js"; // all that functions
+import load_glsl from './test/load_glsl.js';
 
 
 (
-    (a) => {
+    (a,c) => {
         var
             b = (
-                a.getContext("webgl2")
-                ||
                 a.getContext("webgl")
                 ||
                 null
@@ -26,23 +26,28 @@ import render from '/test/render.js';
                         )
                     );
                 }
-            )
+            ),
+
+            _ = b.createProgram()
         ;
+        
         return (
             b.clear(b.COLOR_BUFFER_BIT),
 
             b.enable(b.DEPTH_TEST),
-            b.depthFunc(b.LESS),
-            b.enable(b.CULL_FACE),
-            b.cullFace(b.BACK),
 
-            window.addEventListener("resize", resize),
-
+            window.addEventListener( "resize", resize ),
             window.dispatchEvent( new Event("resize") ),
 
-            render(a,b)
+            load_glsl(b, JSON.parse(document.getElementById("v").textContent), _),
+            b.linkProgram(_),
+
+            (b.getProgramParameter(_, b.LINK_STATUS))
+            ? render(a,b,c,_)
+            : console.error(b.getProgramInfoLog(_))
         );
     }
 )(
-    document.querySelector("canvas")
+    document.querySelector("canvas"),
+    c
 );

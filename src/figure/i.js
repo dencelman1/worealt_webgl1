@@ -1,5 +1,6 @@
 
-export {default as dot } from './dot.js';
+export * from './m/i.js';
 
-export * from './action/i.js';
-export * from './matrix/i.js';
+export {default as cross} from './cross.js';
+export {default as dot} from './dot.js';
+export {default as normalize} from './normalize.js';

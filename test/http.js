@@ -10,21 +10,42 @@ import {join} from "path";
         var
             htmlpath = join(cwd, "test/.html"),
             htmlh = { "Content-Type": "text/html" },
+            
             jsh = { "Content-Type": "text/javascript" },
             jsp = join(cwd, "test/.js"),
+
             icoh = {"Content-Type":"image/x-icon"},
             icop = join(cwd, "test/favicon.ico"),
+
             cssh = {"Content-Type":"text/css"},
-            cssp = join(cwd, "test/.css")
+            cssp = join(cwd, "test/.css"),
+
+            glslp = join(cwd, "src/glsl"),
+
+            glslp_frag = join(glslp, ".frag"),
+            glslp_vert = join(glslp, ".vert")
         ;
         
-
         return createServer((Q, S) => {
-            var u = Q.url;
-
+            var
+                u = Q.url
+            ;
             return (
                 u === "/"
-                ? S.writeHead(200, htmlh).end(readFileSync(htmlpath))
+                ? (
+                    S
+                    .writeHead(200, htmlh)
+                    .end(
+                        readFileSync(htmlpath, "utf8")
+                        .replace(
+                            "{{glsl}}",
+                            (
+                                `[[${JSON.stringify(readFileSync(glslp_vert, "utf8"))}],`
+                                +`[${JSON.stringify(readFileSync(glslp_frag, "utf8"))}]]`
+                            )
+                        )
+                    )
+                )
                 :
                 u === "/favicon.ico"
                 ? S.writeHead(200, icoh).end(readFileSync(icop))
